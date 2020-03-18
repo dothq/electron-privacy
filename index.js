@@ -19,7 +19,13 @@ function setUserAgent (webContents, agent) {
   });
 }
 
-exports.enableFingerprintProtection = function (webContents, options) {
+function addPreload (session, preloadName) {
+  let preloads = session.getPreloads();
+  preloads.push(join(__dirname, 'preloads/' + preloadName));
+  session.setPreloads(preloads);
+}
+
+exports.enableFingerprintProtection = function (webContents, options={}) {
   let session = webContents.session;
   let userAgent;
 
@@ -29,13 +35,16 @@ exports.enableFingerprintProtection = function (webContents, options) {
   }
 
   if(options.removeBatteryAPI != false) {
-    let preloads = session.getPreloads();
-    preloads.push(join(__dirname, 'preloads/remove_battery_api.js'));
-    session.setPreloads(preloads);
+    addPreload(session, 'remove_battery_api.js');
+  }
+
+  if(options.miscRandomization != false) {
+    addPreload(session, 'misc_randomization.js');
   }
 }
 
 exports.enableDoNotTrack = function (webContents) {
+  addPreload(session, 'do_not_track.js');
   webContents.session.webRequest.onBeforeSendHeaders(async (details, callback) => {
     let headers = details.requestHeaders;
     headers['DNT'] = '1';
