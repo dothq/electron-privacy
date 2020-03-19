@@ -7,16 +7,16 @@
   <a href="https://discord.gg/PZjDSX3"><img alt="Discord" src="https://img.shields.io/discord/630199884229771314?color=%237289DA&label=discord&logo=Discord&logoColor=white&style=for-the-badge"></a>
 </p>
 <p align="center">
-	<a href="https://caddyserver.com/download">Install</a> ·
+	<a href="https://github.com/spike-the-coder/electron-privacy/blob/master/README.md#install">Install</a> ·
 <!-- 	<a href="https://caddyserver.com/docs">Documentation</a> · -->
-	<a href="https://discord.gg/PZjDSX3">Community</a>
+	<a href="https://discord.gg/PZjDSX3">Support</a>
 </p>
 
 ---
 
 The package, `electron-privacy` requires **no dependencies**, has a itty bitty **small bundled size** and ensures your Electron application has the **maximum level of privacy** and security.
 
-## Install
+## 🎉 Install
 
 ```
 npm install electron-privacy
@@ -30,7 +30,7 @@ const privacy = require('electron-privacy');
 
 Unfortunately, `electron-privacy` **will not work in any non-Electron applications.**
 
-## Features
+## ⭐ Features
 
 - Block third party cookies
 - User-agent scrambling
@@ -38,3 +38,13 @@ Unfortunately, `electron-privacy` **will not work in any non-Electron applicatio
 - Remove Battery API
 - Fingerprint randomization
 - **Lots more coming in the near future!**
+
+## 🙋‍ FAQ
+
+> Can I install this for normal websites or non-Electron projects?
+
+Unfortunately, `electron-privacy` only works for Electron applications.
+<br><br>
+> Why did you start this project?
+
+Electron is an amazing framework with tons of customization but lacks a lot of really crucial privacy features like blocking third party cookies and preventing fingerprinting. With `electron-privacy`, I hope to implement some of those features into Electron incredibly easily.
