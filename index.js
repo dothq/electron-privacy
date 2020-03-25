@@ -43,9 +43,9 @@ exports.enableFingerprintProtection = function (webContents, options={}) {
   }
 }
 
-exports.enableDoNotTrack = function (webContents) {
+exports.enableDoNotTrack = function (session) {
   addPreload(session, 'do_not_track.js');
-  webContents.session.webRequest.onBeforeSendHeaders(async (details, callback) => {
+  session.webRequest.onBeforeSendHeaders(async (details, callback) => {
     let headers = details.requestHeaders;
     headers['DNT'] = '1';
     callback({ cancel: false, requestHeaders: headers });
