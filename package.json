@@ -1,6 +1,6 @@
 {
 	"name": "electron-privacy",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "🛡 Restrict fingerprinting, block third-party cookies and enhance privacy in your Electron application.",
 	"main": "index.js",
 	"scripts": {

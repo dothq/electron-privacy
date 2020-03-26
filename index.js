@@ -59,7 +59,7 @@ exports.blockThirdPartyCookies = function (webContents, removed) {
     if(!rem) {
       let split = cookie.domain.split('.');
       let domain = split[split.length - 2] + '.' + split[split.length - 1];
-      split = (new URL(view.webContents.getURL())).host.split('.');
+      split = (new URL(webContents.getURL())).host.split('.');
       let host = split[split.length - 2] + '.' + split[split.length - 1];
       if(domain != host) {
         if(removed) removed(cookie);
