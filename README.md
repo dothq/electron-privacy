@@ -1,4 +1,4 @@
-<p align="center"><img src="https://camo.githubusercontent.com/070dc685c00b2a9a4f214910ac7489964b51c7b0/68747470733a2f2f692e7370696b652e636f6465732f752f56324e6b702e706e67" alt="Logo" width="175"></p>
+<p align="center"><img src="https://i.spike.codes/u/hny.png" alt="Logo" width="175"></p>
 <h3 align="center">electron-privacy</h3>
 <p align="center">Restrict fingerprinting, block third-party cookies and enhance privacy in your Electron application.</p>
 <p align="center">
