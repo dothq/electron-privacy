@@ -1,59 +1,65 @@
-const { join } = require('path');
+const { resolve } = require('path');
 
-function randomizedUserAgent (style) {
-  if(style == 'Firefox') {
-    let version = Math.floor(Math.random() * (69 - 53) + 53);
-    return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:' + version + '.0) Gecko/20100101 Firefox/' + version + '.0';
-  } else if (style == 'Chrome') {
-    let version = Math.floor(Math.random() * (74 - 60) + 74);
-    return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/' + version + ' Safari/537.36';
+const addPreload = (session, preload) => {
+  const sessionPreloads = session.getPreloads()
+
+  sessionPreloads.push(resolve(__dirname, 'preloads/', preload))
+
+  session.setPreloads(sessionPreloads)
+}
+
+const loadPrivacyFeatures = (session, options) => {
+  if(!options) options = {}
+  if(!options.disableBatteryAPI) options.disableBatteryAPI = false;
+  if(!options.block3rdPartyCookies) options.block3rdPartyCookies = false;
+  if(!options.doNotTrack) options.doNotTrack = false;
+  if(!options.maskSystemInformation) options.maskSystemInformation = false;
+  if(!options.maskColorDepth) options.maskColorDepth = false;
+  if(!options.removeReferer) options.removeReferer = false;
+
+  if(options.verbose) options.verbose = true;
+
+  if(session == undefined || Object.keys(session).length === 0 && session.constructor === Object || session == null || !session.cookies || !session.webRequest) return console.error("Session is invalid.")
+
+  for (const [key, value] of Object.entries(options)) {
+    if(options.verbose) console.log(key, value)
+
+    if(value == true && key !== 'verbose' && key !== 'customReferer') {
+      if(key == "doNotTrack") enableDNT(session, options)
+      if(key == "block3rdPartyCookies") block3rdPartyCookies(session, options)
+      if(key == "removeReferer") removeReferer(session, options)
+
+      if(key !== "removeReferer" && key !== 'block3rdPartyCookies') {
+        addPreload(session, key)
+
+        if(options.verbose) console.log(`Added \`${key}\` to preload.`)
+      }
+    }
   }
 }
 
-function setUserAgent (webContents, agent) {
-  webContents.setUserAgent(agent);
-  webContents.session.webRequest.onBeforeSendHeaders(async (details, callback) => {
-    let headers = details.requestHeaders;
-    headers['User-Agent'] = agent;
-    callback({ cancel: false, requestHeaders: headers });
-  });
-}
+const enableDNT = (session, options) => {
+  if(options.verbose) console.log(`Enabled \`DNT\` extension`)
 
-function addPreload (session, preloadName) {
-  let preloads = session.getPreloads();
-  preloads.push(join(__dirname, 'preloads/' + preloadName));
-  session.setPreloads(preloads);
-}
-
-exports.enableFingerprintProtection = function (webContents, options={}) {
-  let session = webContents.session;
-  let userAgent;
-
-  if(options.userAgentRandomization != false) {
-    userAgent = randomizedUserAgent(options.userAgentStyle || 'Firefox');
-    setUserAgent(webContents, userAgent);
-  }
-
-  if(options.removeBatteryAPI != false) {
-    addPreload(session, 'remove_battery_api.js');
-  }
-
-  if(options.miscRandomization != false) {
-    addPreload(session, 'misc_randomization.js');
-  }
-}
-
-exports.enableDoNotTrack = function (session) {
-  addPreload(session, 'do_not_track.js');
   session.webRequest.onBeforeSendHeaders(async (details, callback) => {
-    let headers = details.requestHeaders;
-    headers['DNT'] = '1';
-    callback({ cancel: false, requestHeaders: headers });
-  });
+		let headers = details.requestHeaders;
+		headers['DNT'] = '1';
+		callback({ cancel: false, requestHeaders: headers });
+	});
 }
 
-exports.blockThirdPartyCookies = function (webContents, removed) {
-  let session = webContents.session;
+const removeReferer = (session, options) => {
+  if(options.verbose) console.log(`Enabled \`Referer\` extension`)
+
+  session.webRequest.onBeforeSendHeaders(async (details, callback) => {
+		let headers = details.requestHeaders;
+		headers['Referer'] = options.customReferer ? options.customReferer : '';
+		callback({ cancel: false, requestHeaders: headers });
+	});
+}
+
+const block3rdPartyCookies = (session, options) => {
+  if(options.verbose) console.log(`Enabled \`3rd Party Cookies\` extension`)
 
   session.cookies.on('changed', async (e, cookie, cause, rem) => {
     if(!rem) {
@@ -68,3 +74,5 @@ exports.blockThirdPartyCookies = function (webContents, removed) {
     }
   });
 }
+
+module.exports = loadPrivacyFeatures

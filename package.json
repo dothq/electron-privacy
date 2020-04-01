@@ -1,14 +1,14 @@
 {
-	"name": "electron-privacy",
-	"version": "1.0.4",
-	"description": "🛡 Restrict fingerprinting, block third-party cookies and enhance privacy in your Electron application.",
+	"name": "@dothq/electron-privacy",
+	"version": "1.0.3",
+	"description": "🛡 Restrict fingerprinting, block third-party cookies and enhance privacy in your Electron application. Forked from @spike-the-coder",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"pub": "npm publish --access public"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/spike-the-coder/electron-privacy"
+		"url": "https://github.com/dothq/electron-privacy"
 	},
 	"keywords": [
 		"privacy",
@@ -17,10 +17,10 @@
 		"fingerprinting",
 		"security"
 	],
-	"author": "Spike The Coder",
+	"author": "Spike The Coder & Dot HQ",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/spike-the-coder/electron-privacy/issues"
+		"url": "https://github.com/dothq/electron-privacy/issues"
 	},
-	"homepage": "https://github.com/spike-the-coder/electron-privacy#readme"
+	"homepage": "https://github.com/dothq/electron-privacy#readme"
 }

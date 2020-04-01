@@ -8,5 +8,5 @@ async function modifyDefault (defaultVar, name, value) {
 	}
 }
 
-modifyDefault(navigator, 'hardwareConcurrency', Math.round(Math.random()) == 0 ? 4 : 8);
-modifyDefault(screen, 'colorDepth', Math.round(Math.random()) == 0 ? 24 : 32);
+modifyDefault(navigator, 'doNotTrack', '1');
+
